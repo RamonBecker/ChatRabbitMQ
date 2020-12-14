@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="vbox" alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ifsc.crud.controllers.UpdateController">
+    <children>
+      <HBox>
+         <children>
+              <Label text="Nome:">
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </Label>
+            <AnchorPane HBox.hgrow="ALWAYS">
+               <children>
+                  <TextField fx:id="txtName" disable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox>
+         <children>
+            <Label text="Idade:">
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </Label>
+            <AnchorPane HBox.hgrow="ALWAYS">
+               <children>
+                  <TextField fx:id="txtAge" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </AnchorPane>
+            <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#update" text="Atualizar" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</VBox>
