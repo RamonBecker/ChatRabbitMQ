@@ -34,10 +34,10 @@ public class LoginController {
 		System.out.println(textPassword.getText().trim());
 		try {
 			controllerUser.login(textUsername.getText().trim(), textPassword.getText().trim());
-			
+			controllerUser.setUserLogado(textUsername.getText());
 			
 			FXMLLoader fxmlLoader = new FXMLLoader(App1.class.getResource("principal.fxml"));
-
+			
 			Parent root = (Parent) fxmlLoader.load();
 			Stage stage = new Stage();
 			stage.setScene(new Scene(root));

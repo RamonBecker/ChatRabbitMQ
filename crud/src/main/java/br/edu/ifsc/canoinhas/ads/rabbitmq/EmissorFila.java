@@ -8,8 +8,8 @@ public class EmissorFila {
 
     private final static String QUEUE_NAME = "luciano";
     private final static String VHOST = "/";
-    public final static String USER = "admin";
-    public final static String PASSWD = "admin";
+    public final static String USER = "becker";
+    public final static String PASSWD = "becker";
     public final static String HOST = "127.0.0.1";
 
     public static void main(String[] argv) throws Exception {

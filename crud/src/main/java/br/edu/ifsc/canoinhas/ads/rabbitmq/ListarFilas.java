@@ -50,7 +50,7 @@ public class ListarFilas {
 	public static void getQueues() {
 		try {
 
-			String userpass = "admin:ads2020";
+			String userpass = "becker:becker";
 			String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userpass.getBytes()));
 
 			URL url = new URL("http://localhost:15672/api/queues");

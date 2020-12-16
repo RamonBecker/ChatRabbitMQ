@@ -14,7 +14,7 @@ public class ListarFilas2 {
 	public static void main(String args[]) throws MalformedURLException, URISyntaxException {
 
 		Client c = new Client(
-				new ClientParameters().url("http://127.0.0.1:15672/api/").username("admin").password("ads2020"));
+				new ClientParameters().url("http://127.0.0.1:15672/api/").username("becker").password("becker"));
 
 		List<QueueInfo> queues = c.getQueues();
 

@@ -9,8 +9,8 @@ public class ReceptorFila {
 
     private final static String QUEUE_NAME = "luciano";
     private final static String VHOST = "/";
-    public final static String USER = "admin";
-    public final static String PASSWD = "ads2020";
+    public final static String USER = "silva";
+    public final static String PASSWD = "silva";
     public final static String HOST = "localhost";
 
     public static void main(String[] argv) throws Exception {
@@ -34,5 +34,7 @@ public class ReceptorFila {
             }
         };
         channel.basicConsume(QUEUE_NAME, true, consumer);
+     //   channel.close();
+     //   connection.close();
     }
 }

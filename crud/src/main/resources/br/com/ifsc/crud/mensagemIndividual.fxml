@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ifsc.crud.controllersViews.MensagemIndividualController">
+   <children>
+      <TextArea fx:id="txtAreaMensagem" disable="true" editable="false" layoutX="28.0" layoutY="63.0" prefHeight="258.0" prefWidth="526.0" text="&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;" />
+      <TextField fx:id="textMensagemUsuario" layoutX="99.0" layoutY="338.0" prefHeight="25.0" prefWidth="455.0" promptText="Digite sua mensagem " />
+      <Label layoutX="28.0" layoutY="342.0" text="Mensagem:" />
+      <Button fx:id="btnEnviar" layoutX="99.0" layoutY="387.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Enviar " />
+      <Button fx:id="btnSair" layoutX="221.0" layoutY="387.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Sair" />
+      <Label layoutX="28.0" layoutY="29.0" text="Contato:" />
+      <TextField fx:id="textContato" disable="true" editable="false" layoutX="81.0" layoutY="25.0" prefHeight="25.0" prefWidth="203.0" />
+   </children>
+</AnchorPane>
