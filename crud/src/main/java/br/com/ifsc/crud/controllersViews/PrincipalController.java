@@ -35,7 +35,7 @@ public class PrincipalController implements Initializable {
 
 	private ObservableList<User1> listContatos = FXCollections.observableArrayList();
 
-	private User1 user;
+	private User1 userContato;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -58,22 +58,35 @@ public class PrincipalController implements Initializable {
 	}
 
 	public void actionListViewContato() {
-		user = listViewContatos.getSelectionModel().getSelectedItem();
-		System.out.println("USUÁRIO:" + user);
+		userContato = listViewContatos.getSelectionModel().getSelectedItem();
+		System.out.println("USUÁRIO:" + userContato);
+
+		try {
+			MensagemIndividualController.contato = userContato;
+			Stage stage = new Stage();
+			FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("mensagemIndividual.fxml"));
+			Parent root;
+			root = (Parent) fxmlLoader.load();
+			stage.setScene(new Scene(root));
+			stage.show();
+
+		} catch (IOException e) {
+			MessageAlert.mensagemErro("Ocorreu um erro ao iniciar uma conversa!");
+			e.printStackTrace();
+		}
+
 	}
 
 	public void actionAddGrupo() {
 		try {
 
-			
 			Stage stage = new Stage();
 			FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("registerGrupo.fxml"));
 			Parent root;
 			root = (Parent) fxmlLoader.load();
 			stage.setScene(new Scene(root));
 			stage.show();
-			
-	
+
 		} catch (IOException e) {
 			MessageAlert.mensagemErro("Ocorreu um erro ao abrir a tela para adicionar um grupo!");
 			e.printStackTrace();

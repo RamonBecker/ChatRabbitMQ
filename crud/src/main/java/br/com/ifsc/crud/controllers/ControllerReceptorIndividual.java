@@ -16,9 +16,9 @@ import br.com.ifsc.crud.utility.MessageAlert;
 
 public class ControllerReceptorIndividual {
 	private static String QUEUE_NAME;
-	private static String VHOST = "/";
+	private static final String VHOST = "/";
 	private static User1 user;
-	private static String HOST = "localhost";
+	private static final String HOST = "localhost";
 	private String mensagem;
 
 	private static ConnectionFactory factory;
@@ -98,7 +98,7 @@ public class ControllerReceptorIndividual {
 
 	public void setMensagem(String mensagem) {
 		if(mensagem == null || mensagem.isBlank()) {
-			throw new IllegalArgumentException("");
+			throw new IllegalArgumentException("A mensagem recebida é vazia");
 		}
 		this.mensagem = mensagem;
 	}
