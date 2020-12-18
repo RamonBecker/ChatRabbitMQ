@@ -11,25 +11,73 @@ import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
+import br.com.ifsc.crud.controllersViews.MensagemIndividualController;
 import br.com.ifsc.crud.entities.User1;
 import br.com.ifsc.crud.utility.MessageAlert;
 
-public class ControllerReceptorIndividual {
+public class ControllerReceptorIndividual extends Thread {
 	private static String QUEUE_NAME;
 	private static final String VHOST = "/";
 	private static User1 user;
 	private static final String HOST = "localhost";
-	private String mensagem;
+	private static String mensagem;
 
 	private static ConnectionFactory factory;
-	private Connection connection;
+	private static Connection connection;
 	private static Channel channel;
 
 	public ControllerReceptorIndividual() {
 		factory = new ConnectionFactory();
 	}
 
-	public void IniciarReceptorIndividual() {
+	public void run() {
+			String [] mes = new String[1];
+			mes[0] = "";
+			main(mes);
+			
+		
+	}
+
+	
+	public static void main(String[] args) {
+		try {
+			factory.setHost(HOST);
+			factory.setUsername(user.getUsername());
+			factory.setPassword(user.getPassword());
+			factory.setVirtualHost(VHOST);
+			connection = factory.newConnection();
+			channel = connection.createChannel();
+
+			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+
+			System.out.println("Aguardando mensagens da fila " + QUEUE_NAME);
+
+			Consumer consumer = new DefaultConsumer(channel) {
+				
+				private String me;
+				private ControllerReceptorIndividual controllerReceptorIndividual;
+				
+				@Override
+				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
+						byte[] body) throws IOException {
+					ControllerReceptorIndividual.mensagem = new String(body, "UTF-8");
+					System.out.println(" Mensagem: " + ControllerReceptorIndividual.mensagem);
+				}
+				
+				
+			};
+			
+			channel.basicConsume(QUEUE_NAME, true, consumer);
+			
+		} catch (IOException | TimeoutException  e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+	public void iniciarReceptorIndividual() {
+		
 
 		try {
 			factory.setHost(HOST);
@@ -50,32 +98,35 @@ public class ControllerReceptorIndividual {
 					mensagem = new String(body, "UTF-8");
 					System.out.println(" Mensagem: " + mensagem);
 				}
+			
+				
 			};
+			
 			channel.basicConsume(QUEUE_NAME, true, consumer);
-
-		} catch (IOException | TimeoutException e) {
+			
+		} catch (IOException | TimeoutException  e) {
 			e.printStackTrace();
 		}
 
 	}
 
 	public void encerrarConexao() {
-	     try {
+		try {
 			channel.close();
-		    connection.close();
+			connection.close();
 		} catch (IOException | TimeoutException e) {
 			MessageAlert.mensagemErro("Erro ao fechar conexão");
 			e.printStackTrace();
 		}
-	  
+
 	}
-	
+
 	public static String getQUEUE_NAME() {
 		return QUEUE_NAME;
 	}
 
 	public static void setQUEUE_NAME(String qUEUE_NAME) {
-		if(qUEUE_NAME == null || qUEUE_NAME.isBlank()) {
+		if (qUEUE_NAME == null || qUEUE_NAME.isBlank()) {
 			throw new IllegalArgumentException("O nome da fila não pode ser vazio");
 		}
 		QUEUE_NAME = qUEUE_NAME;
@@ -86,22 +137,21 @@ public class ControllerReceptorIndividual {
 	}
 
 	public static void setUser(User1 user) {
-		if(user == null) {
+		if (user == null) {
 			throw new IllegalArgumentException("O usuário não pode ser nulo!");
 		}
 		ControllerReceptorIndividual.user = user;
 	}
 
-	public String getMensagem() {
+	public static String getMensagem() {
 		return mensagem;
 	}
 
-	public void setMensagem(String mensagem) {
-		if(mensagem == null || mensagem.isBlank()) {
+	public static void setMensagem(String mensagem) {
+		if (mensagem == null || mensagem.isBlank()) {
 			throw new IllegalArgumentException("A mensagem recebida é vazia");
 		}
-		this.mensagem = mensagem;
+		ControllerReceptorIndividual.mensagem = mensagem;
 	}
-
 
 }

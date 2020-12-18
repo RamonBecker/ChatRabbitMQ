@@ -59,9 +59,15 @@ public class PrincipalController implements Initializable {
 
 	public void actionListViewContato() {
 		userContato = listViewContatos.getSelectionModel().getSelectedItem();
-		System.out.println("USUÁRIO:" + userContato);
+	
 
 		try {
+			
+			Scene scene = btnGrupo.getScene();
+			Stage stageWindow = (Stage) scene.getWindow();
+			stageWindow.close();
+			
+			
 			MensagemIndividualController.contato = userContato;
 			Stage stage = new Stage();
 			FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("mensagemIndividual.fxml"));
@@ -79,13 +85,19 @@ public class PrincipalController implements Initializable {
 
 	public void actionAddGrupo() {
 		try {
-
+			Scene scene = btnGrupo.getScene();
+			Stage stageWindow = (Stage) scene.getWindow();
+			stageWindow.close();
+			
+			
 			Stage stage = new Stage();
 			FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("registerGrupo.fxml"));
 			Parent root;
 			root = (Parent) fxmlLoader.load();
 			stage.setScene(new Scene(root));
 			stage.show();
+			
+
 
 		} catch (IOException e) {
 			MessageAlert.mensagemErro("Ocorreu um erro ao abrir a tela para adicionar um grupo!");
