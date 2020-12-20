@@ -4,18 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.com.ifsc.crud.entities.Grupo;
-import br.com.ifsc.crud.entities.User1;
+import br.com.ifsc.crud.entities.User;
 
 public class ControllerUser {
-	private Map<String, User1> listUser;
+	private Map<String, User> listUser;
 	private static ControllerUser controllerUser;
 	private String userLogado;
 
 	private ControllerUser() {
-		this.listUser = new HashMap<String, User1>();
-		User1 user1 = new User1("becker", "becker");
-		User1 user2 = new User1("silva", "silva");
-		User1 user3 = new User1("ramon", "ramon");
+		this.listUser = new HashMap<String, User>();
+		User user1 = new User("becker", "becker");
+		User user2 = new User("silva", "silva");
+		User user3 = new User("ramon", "ramon");
 
 		user1.getListContatos().put(user2.getUsername(), user2);
 		user1.getListContatos().put(user3.getUsername(), user3);
@@ -40,7 +40,7 @@ public class ControllerUser {
 
 	public void login(String username, String password) throws Exception {
 		if (getListUser().containsKey(username)) {
-			User1 user = getListUser().get(username);
+			User user = getListUser().get(username);
 			System.out.println("USER:" + user);
 			if (!user.getPassword().equals(password)) {
 				throw new Exception("Usuário ou/e senha incorretos !");
@@ -61,7 +61,7 @@ public class ControllerUser {
 		this.userLogado = userLogado;
 	}
 	
-	public void addGrupo(String grupo, User1 userLogado, User1 contato) {
+	public void addGrupo(String grupo, User userLogado, User contato) {
 		
 		
 //		if(userLogado.getListGrupos().containsKey(grupo)) {
@@ -75,9 +75,9 @@ public class ControllerUser {
 		//userLogado.getListGrupos().put(key, value)
 	}
 
-	public Map<String, User1> getListUser() {
+	public Map<String, User> getListUser() {
 		if (this.listUser == null) {
-			this.listUser = new HashMap<String, User1>();
+			this.listUser = new HashMap<String, User>();
 		}
 		return listUser;
 	}

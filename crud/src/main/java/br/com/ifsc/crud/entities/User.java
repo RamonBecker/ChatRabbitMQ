@@ -1,89 +1,79 @@
 package br.com.ifsc.crud.entities;
 
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class User {
 
-	private String name;
+	private String username;
+	private String password;
+	private Map<String, Grupo> listGrupos;
+	private Map<String, User> listContatos;
+	private Map<String, String> filaIndividual;
 
-	private int age;
-
-	private String registerDate;
-
-	public User() {
+	public User(String username, String password) {
+		this.username = username;
+		this.password = password;
 	}
 
-	public User(String name, int age, String registerDate) {
-		super();
-		this.name = name;
-		this.age = age;
-		this.registerDate = registerDate;
+	public String getUsername() {
+		return username;
 	}
 
-	public String getName() {
-		return name;
+	public void setUsername(String username) {
+		if (username == null || username.isBlank()) {
+			throw new IllegalArgumentException("O username não pode ser vazio");
+		}
+		this.username = username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getPassword() {
+		return password;
 	}
 
-	public int getAge() {
-		return age;
+	public void setPassword(String password) {
+		if (password == null || password.isBlank()) {
+			throw new IllegalArgumentException("A password não pode ser vazio");
+		}
+		this.password = password;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public Map<String, Grupo> getListGrupos() {
+		if (this.listGrupos == null) {
+			this.listGrupos = new HashMap<String, Grupo>();
+		}
+		return listGrupos;
 	}
 
-	public String getRegisterDate() {
-		return registerDate;
+	public void setListGrupos(Map<String, Grupo> listGrupos) {
+		this.listGrupos = listGrupos;
 	}
 
-	public void setRegisterDate(String registerDate) {
-		this.registerDate = registerDate;
+	public Map<String, User> getListContatos() {
+		if (this.listContatos == null) {
+			this.listContatos = new HashMap<String, User>();
+		}
+		return listContatos;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + age;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((registerDate == null) ? 0 : registerDate.hashCode());
-		return result;
+	public void setListContatos(Map<String, User> listContatos) {
+		this.listContatos = listContatos;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (age != other.age)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (registerDate == null) {
-			if (other.registerDate != null)
-				return false;
-		} else if (!registerDate.equals(other.registerDate))
-			return false;
-		return true;
+	public Map<String, String> getFilaIndividual() {
+		if (filaIndividual == null) {
+			filaIndividual = new HashMap<String, String>();
+		}
+		return filaIndividual;
 	}
 
-	// método onde definimos o que será escrito quando chamarmos o println(objeto)
+	public void setFilaIndividual(Map<String, String> filaIndividual) {
+		this.filaIndividual = filaIndividual;
+	}
+
 	@Override
 	public String toString() {
-		return "Usuário " + name + ", com " + age + " anos, registrado em " + registerDate + ".";
+		return "Usuário:" + username;
 	}
 
 }

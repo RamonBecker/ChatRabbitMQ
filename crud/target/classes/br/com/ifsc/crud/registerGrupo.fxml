@@ -3,22 +3,30 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="469.0" prefWidth="493.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ifsc.crud.controllersViews.RegisterGrupoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="458.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ifsc.crud.controllersViews.RegisterGrupoController">
    <children>
-      <TextField fx:id="textNomeGrupo" layoutX="130.0" layoutY="134.0" prefHeight="25.0" prefWidth="231.0" />
+      <TextField fx:id="textNomeGrupo" layoutX="130.0" layoutY="134.0" prefHeight="25.0" prefWidth="202.0" />
       <Label layoutX="32.0" layoutY="138.0" text="Nome do grupo:" />
       <Label layoutX="163.0" layoutY="58.0" text="Cadastrar Grupo">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
-      <ListView fx:id="listViewContatos" layoutX="130.0" layoutY="210.0" prefHeight="110.0" prefWidth="231.0" />
-      <Label layoutX="64.0" layoutY="210.0" text="Contatos:" />
-      <Button fx:id="btnAdicionar" layoutX="188.0" layoutY="373.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="96.0" text="Adicionar" />
+      <ListView fx:id="listViewContatos" disable="true" layoutX="130.0" layoutY="243.0" prefHeight="133.0" prefWidth="231.0" />
+      <Label layoutX="64.0" layoutY="243.0" text="Contatos:" />
+      <Button fx:id="btnAdicionar" layoutX="130.0" layoutY="397.0" mnemonicParsing="false" onAction="#actionAddGrupo" prefHeight="28.0" prefWidth="96.0" text="Adicionar" />
+      <Button fx:id="btnVoltar" layoutX="265.0" layoutY="397.0" mnemonicParsing="false" onAction="#voltar" prefHeight="28.0" prefWidth="96.0" text="Voltar" />
+      <RadioButton fx:id="radioSim" layoutX="133.0" layoutY="197.0" mnemonicParsing="false" onAction="#actionRadioButton" text="Sim">
+         <toggleGroup>
+            <ToggleGroup fx:id="group1" />
+         </toggleGroup></RadioButton>
+      <Label layoutX="133.0" layoutY="173.0" text="Deseja adicionar todos os contatos ?" />
+      <RadioButton fx:id="radioNao" layoutX="288.0" layoutY="197.0" mnemonicParsing="false" onAction="#actionRadioButton" text="Não" toggleGroup="$group1" />
    </children>
 </AnchorPane>

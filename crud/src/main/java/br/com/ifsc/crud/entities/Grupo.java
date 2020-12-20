@@ -5,13 +5,13 @@ import java.util.Map;
 
 public class Grupo {
 	private String name;
-	private Map<String, User1> listUsers;
+	private Map<String, User> listUsers;
 
 	public Grupo() {
-		this.listUsers = new HashMap<String, User1>();
+		this.listUsers = new HashMap<String, User>();
 	}
 
-	public Grupo(String name, Map<String, User1> listUsers) {
+	public Grupo(String name, Map<String, User> listUsers) {
 		this.name = name;
 		this.listUsers = listUsers;
 	}
@@ -24,14 +24,14 @@ public class Grupo {
 		this.name = name;
 	}
 
-	public Map<String, User1> getListUsers() {
+	public Map<String, User> getListUsers() {
 		if (this.listUsers == null) {
-			this.listUsers = new HashMap<String, User1>();
+			this.listUsers = new HashMap<String, User>();
 		}
 		return listUsers;
 	}
 
-	public void setListUsers(Map<String, User1> listUsers) {
+	public void setListUsers(Map<String, User> listUsers) {
 		this.listUsers = listUsers;
 	}
 

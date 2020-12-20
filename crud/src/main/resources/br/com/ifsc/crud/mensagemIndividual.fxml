@@ -12,8 +12,10 @@
       <TextField fx:id="textMensagemUsuario" layoutX="99.0" layoutY="338.0" prefHeight="25.0" prefWidth="455.0" promptText="Digite sua mensagem " />
       <Label layoutX="28.0" layoutY="342.0" text="Mensagem:" />
       <Button fx:id="btnEnviar" layoutX="99.0" layoutY="387.0" mnemonicParsing="false" onAction="#enviarMensagem" prefHeight="25.0" prefWidth="106.0" text="Enviar " />
-      <Button fx:id="btnSair" layoutX="221.0" layoutY="387.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Sair" />
+      <Button fx:id="btnSair" layoutX="221.0" layoutY="387.0" mnemonicParsing="false" onAction="#sairConversa" prefHeight="25.0" prefWidth="106.0" text="Sair" />
       <Label layoutX="28.0" layoutY="29.0" text="Contato:" />
-      <TextField fx:id="textContato" editable="false" layoutX="81.0" layoutY="25.0" prefHeight="25.0" prefWidth="203.0" />
+      <TextField fx:id="textContato" editable="false" layoutX="81.0" layoutY="25.0" prefHeight="25.0" prefWidth="146.0" />
+      <Label layoutX="359.0" layoutY="29.0" text="Usuário:" />
+      <TextField fx:id="textUsuario" editable="false" layoutX="408.0" layoutY="25.0" prefHeight="25.0" prefWidth="146.0" />
    </children>
 </AnchorPane>
