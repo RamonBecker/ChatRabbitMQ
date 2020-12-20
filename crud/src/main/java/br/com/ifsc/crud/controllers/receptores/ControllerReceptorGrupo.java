@@ -1,4 +1,4 @@
-package br.com.ifsc.crud.controllers;
+package br.com.ifsc.crud.controllers.receptores;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -11,15 +11,18 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+
+import br.com.ifsc.crud.controllersViews.MensagemGrupoController;
 import br.com.ifsc.crud.entities.User;
 
 public class ControllerReceptorGrupo {
-	private static String EXCHANGE_NAME;
+	private String EXCHANGE_NAME;
 	private static User user;
 	public final static String HOST = "localhost";
 	private final static String VHOST = "/";
 	private Connection connection;
 	private Channel channel;
+	private static MensagemGrupoController mensagemGrupoController;
 
 	public void iniciarReceptorGrupo() {
 		try {
@@ -45,12 +48,59 @@ public class ControllerReceptorGrupo {
 						byte[] body) throws IOException {
 					String message = new String(body, "UTF-8");
 					System.out.println(" Mensagem: " + message);
+
+					String[] mensagemSeparada = message.split(";");
+					System.out.println(mensagemSeparada[0]);
+					System.out.println(mensagemSeparada[1]);
+					
+					if (getMensagemGrupoController().getTxtAreaMensagem().getText().isBlank()) {
+						getMensagemGrupoController().getTxtAreaMensagem().setText(
+
+								mensagemSeparada[0] + " enviou:" + mensagemSeparada[1]);
+					} else {
+
+						getMensagemGrupoController().getTxtAreaMensagem()
+								.setText(getMensagemGrupoController().getTxtAreaMensagem().getText() + "\n"
+										+ mensagemSeparada[0]  + " respondeu:" + mensagemSeparada[1]);
+
+					}
 				}
 			};
 			channel.basicConsume(queueName, true, consumer);
 		} catch (IOException | TimeoutException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public String getEXCHANGE_NAME() {
+		return EXCHANGE_NAME;
+	}
+
+	public void setNomeFila(String nomeFila) {
+		if (nomeFila == null || nomeFila.isBlank()) {
+			throw new IllegalArgumentException("O nome da fila não pode ser vazia!");
+		}
+		EXCHANGE_NAME = nomeFila;
+	}
+
+	public void setUser(User user) {
+		if (user == null) {
+			throw new IllegalArgumentException("O usuário não pode ser vazio!");
+		}
+		ControllerReceptorGrupo.user = user;
+	}
+
+	public static User getUser() {
+		return user;
+	}
+
+	public static MensagemGrupoController getMensagemGrupoController() {
+		return mensagemGrupoController;
+	}
+
+	public void setMensagemGrupoController(MensagemGrupoController mensagemGrupoController) {
+		ControllerReceptorGrupo.mensagemGrupoController = mensagemGrupoController;
+
 	}
 
 }

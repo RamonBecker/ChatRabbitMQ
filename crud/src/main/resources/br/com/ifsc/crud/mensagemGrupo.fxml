@@ -13,10 +13,10 @@
       <TextField fx:id="textMensagemUsuario" layoutX="101.0" layoutY="356.0" prefHeight="25.0" prefWidth="256.0" promptText="Digite sua mensagem " />
       <Label layoutX="30.0" layoutY="360.0" text="Mensagem:" />
       <Button fx:id="btnEnviar" layoutX="101.0" layoutY="406.0" mnemonicParsing="false" onAction="#enviarMensagem" prefHeight="25.0" prefWidth="106.0" text="Enviar " />
-      <Button fx:id="btnSair" layoutX="227.0" layoutY="406.0" mnemonicParsing="false" onAction="#sairConversa" prefHeight="25.0" prefWidth="112.0" text="Sair" />
+      <Button fx:id="btnSair" layoutX="227.0" layoutY="406.0" mnemonicParsing="false" onAction="#sair" prefHeight="25.0" prefWidth="112.0" text="Sair" />
       <Label layoutX="28.0" layoutY="27.0" text="Usuário:" />
       <TextField fx:id="textUsuario" editable="false" layoutX="81.0" layoutY="23.0" prefHeight="25.0" prefWidth="146.0" />
-      <ListView fx:id="listContatos" layoutX="366.0" layoutY="86.0" prefHeight="258.0" prefWidth="200.0" />
+      <ListView fx:id="listViewContatos" layoutX="366.0" layoutY="86.0" prefHeight="258.0" prefWidth="200.0" />
       <Label layoutX="445.0" layoutY="63.0" text="Contatos" />
    </children>
 </AnchorPane>

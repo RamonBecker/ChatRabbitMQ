@@ -1,4 +1,4 @@
-package br.com.ifsc.crud.controllers;
+package br.com.ifsc.crud.controllers.emissores;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -9,7 +9,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import br.com.ifsc.crud.entities.User;
 
 public class ControllerEmissorGrupo {
-	private static String EXCHANGE_NAME;
+	private String EXCHANGE_NAME;
 	private final static String VHOST = "/";
 	public final static String HOST = "localhost";
 	private static User user;
@@ -47,18 +47,26 @@ public class ControllerEmissorGrupo {
 		this.mensagem = mensagem;
 	}
 
-	public static String getEXCHANGE_NAME() {
+	public String getEXCHANGE_NAME() {
 		return EXCHANGE_NAME;
 	}
 
-	public static void setEXCHANGE_NAME(String eXCHANGE_NAME) {
-		if(eXCHANGE_NAME == null || eXCHANGE_NAME.isBlank()) {
-			throw new IllegalArgumentException("O nome da fila não pode ser vazio!");
+	public void setNomeFila(String nomeFila) {
+		if (nomeFila == null || nomeFila.isBlank()) {
+			throw new IllegalArgumentException("O nome da fila não pode ser vazia!");
 		}
-		EXCHANGE_NAME = eXCHANGE_NAME;
+		EXCHANGE_NAME = nomeFila;
 	}
 
+	public void setUser(User user) {
+		if (user == null) {
+			throw new IllegalArgumentException("O usuário não pode ser vazio!");
+		}
+		ControllerEmissorGrupo.user = user;
+	}
 
-	
+	public static User getUser() {
+		return user;
+	}
 
 }

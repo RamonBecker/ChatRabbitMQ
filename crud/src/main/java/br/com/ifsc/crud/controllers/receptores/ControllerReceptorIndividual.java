@@ -1,4 +1,4 @@
-package br.com.ifsc.crud.controllers;
+package br.com.ifsc.crud.controllers.receptores;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -24,11 +24,9 @@ public class ControllerReceptorIndividual extends Thread {
 	private static Connection connection;
 	private static Channel channel;
 	private static MensagemIndividualController mensagemIndividualController;
-	private static ControllerUser controllerUser;
 
 	public ControllerReceptorIndividual() {
 		factory = new ConnectionFactory();
-		controllerUser = ControllerUser.getInstance();
 	}
 
 	public void run() {
@@ -143,17 +141,6 @@ public class ControllerReceptorIndividual extends Thread {
 			throw new IllegalArgumentException("O contato não pode ser vazio");
 		}
 		ControllerReceptorIndividual.contato = contato;
-	}
-
-	public static ControllerUser getControllerUser() {
-		return controllerUser;
-	}
-
-	public static void setControllerUser(ControllerUser controllerUser) {
-		if (controllerUser == null) {
-			throw new IllegalArgumentException("O controllerUser não pode ser vazio!");
-		}
-		ControllerReceptorIndividual.controllerUser = controllerUser;
 	}
 
 }

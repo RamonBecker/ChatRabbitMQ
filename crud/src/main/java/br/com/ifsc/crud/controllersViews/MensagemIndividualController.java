@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import br.com.ifsc.crud.App1;
-import br.com.ifsc.crud.controllers.ControllerEmissorIndividual;
-import br.com.ifsc.crud.controllers.ControllerReceptorIndividual;
 import br.com.ifsc.crud.controllers.ControllerUser;
+import br.com.ifsc.crud.controllers.emissores.ControllerEmissorIndividual;
+import br.com.ifsc.crud.controllers.receptores.ControllerReceptorIndividual;
 import br.com.ifsc.crud.entities.User;
 import br.com.ifsc.crud.utility.MessageAlert;
 import javafx.fxml.FXML;
@@ -54,9 +54,6 @@ public class MensagemIndividualController implements Initializable {
 
 	private List<String> mensagensContato;
 
-	private String nomeFilaReceptor;
-
-	private String nomeFilaEmissor;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -78,18 +75,12 @@ public class MensagemIndividualController implements Initializable {
 		controllerEmissorIndividual.setMensagemIndividualController(this);
 		ControllerReceptorIndividual.setMensagemIndividualController(this);
 
-		receberMensagem();
-		verificarListasIndividuais();
+		iniciarReceptor();
+		verificarConversaInserida();
 	}
 
-	private void receberMensagem() {
-		try {
-
-			controllerReceptorIndividual.start();
-			controllerReceptorIndividual.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	private void iniciarReceptor() {
+		controllerReceptorIndividual.iniciarReceptorIndividual();
 	}
 
 	public void enviarMensagem() {
@@ -98,7 +89,7 @@ public class MensagemIndividualController implements Initializable {
 			controllerEmissorIndividual.setMensagem(textMensagemUsuario.getText().trim());
 			if (txtAreaMensagem.getText().isBlank()) {
 				txtAreaMensagem.setText(
-						userLogado.getUsername() + " enviou a mensagem: " + textMensagemUsuario.getText().trim());
+						userLogado.getUsername() + " enviou: " + textMensagemUsuario.getText().trim());
 
 			} else {
 				txtAreaMensagem.setText(txtAreaMensagem.getText() + "\n" + userLogado.getUsername()
@@ -115,7 +106,7 @@ public class MensagemIndividualController implements Initializable {
 
 	}
 
-	private void verificarListasIndividuais() {
+	private void verificarConversaInserida() {
 
 		if (userLogado.getFilaIndividual().containsKey(ControllerEmissorIndividual.getQUEUE_NAME())) {
 

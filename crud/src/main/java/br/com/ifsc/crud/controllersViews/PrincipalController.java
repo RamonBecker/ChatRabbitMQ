@@ -46,6 +46,8 @@ public class PrincipalController implements Initializable {
 	private User userContato;
 
 	private User userLogado;
+	
+	private Grupo grupo;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -106,6 +108,30 @@ public class PrincipalController implements Initializable {
 
 	}
 
+	public void actionListViewGrupo() {
+		grupo = listViewGrupo.getSelectionModel().getSelectedItem();
+		try {
+		Scene scene = btnGrupo.getScene();
+		Stage stageWindow = (Stage) scene.getWindow();
+		stageWindow.close();
+
+		MensagemGrupoController.grupo = grupo;
+		Stage stage = new Stage();
+		FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("mensagemGrupo.fxml"));
+		Parent root;
+		
+			root = (Parent) fxmlLoader.load();
+		
+		stage.setScene(new Scene(root));
+		stage.show();
+		
+		} catch (IOException e) {
+			MessageAlert.mensagemErro("Ocorreu um erro ao iniciar uma conversa em grupo!");
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void actionAddGrupo() {
 		try {
 			Scene scene = btnGrupo.getScene();
