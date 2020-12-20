@@ -6,6 +6,7 @@ import java.util.Map;
 public class Grupo {
 	private String name;
 	private Map<String, User> listUsers;
+	private String mensagem;
 
 	public Grupo() {
 		this.listUsers = new HashMap<String, User>();
@@ -32,7 +33,21 @@ public class Grupo {
 	}
 
 	public void setListUsers(Map<String, User> listUsers) {
+		if (listUsers == null) {
+			throw new IllegalArgumentException("A lista não pode ser vazia!");
+		}
 		this.listUsers = listUsers;
+	}
+
+	public String getMensagem() {
+		return mensagem;
+	}
+
+	public void setMensagem(String mensagem) {
+		if(mensagem == null) {
+			throw new IllegalArgumentException("A mensagem não pode ser vazia!");
+		}
+		this.mensagem = mensagem;
 	}
 
 	@Override

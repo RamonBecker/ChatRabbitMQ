@@ -136,15 +136,27 @@ public class RegisterGrupoController implements Initializable {
 	private void adicionarGrupo(User user, Grupo grupo) {
 		user.getListGrupos().put(textNomeGrupo.getText(), grupo);
 		controllerUser.getListUser().put(user.getUsername(), user);
+
+		for (String username : grupo.getListUsers().keySet()) {
+			if (controllerUser.getListUser().containsKey(username)) {
+				User contato = controllerUser.getListUser().get(username);
+				contato.getListGrupos().put(grupo.getName(), grupo);
+				controllerUser.getListUser().put(contato.getUsername(), contato);
+			}
+		}
+
 		MessageAlert.mensagemRealizadoSucesso("Contatos adicionados com sucesso!");
 		listarGrupos();
 		cleanFields();
 	}
 
 	private void adicionarGrupo(User user, Grupo grupo, User contato) {
+		contato.getListGrupos().put(grupo.getName(), grupo);
+
 		grupo.getListUsers().put(contato.getUsername(), contato);
 		user.getListGrupos().put(textNomeGrupo.getText(), grupo);
 		controllerUser.getListUser().put(user.getUsername(), user);
+		controllerUser.getListUser().put(contato.getUsername(), contato);
 		MessageAlert.mensagemRealizadoSucesso("Contato adicionado com sucesso!");
 		listarGrupos();
 		cleanFields();

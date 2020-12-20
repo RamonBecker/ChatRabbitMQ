@@ -80,7 +80,8 @@ public class ControllerReceptorIndividual extends Thread {
 
 	}
 
-	public void encerrarConexao() {
+	
+	public void fecharConexao() {
 		try {
 			channel.close();
 			connection.close();
@@ -88,8 +89,9 @@ public class ControllerReceptorIndividual extends Thread {
 			MessageAlert.mensagemErro("Erro ao fechar conexão");
 			e.printStackTrace();
 		}
-
+		
 	}
+	
 
 	public static String getQUEUE_NAME() {
 		return QUEUE_NAME;

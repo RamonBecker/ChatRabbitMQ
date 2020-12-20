@@ -9,7 +9,8 @@ public class User {
 	private String password;
 	private Map<String, Grupo> listGrupos;
 	private Map<String, User> listContatos;
-	private Map<String, String> filaIndividual;
+	private Map<String, String> filaMensagemIndividual;
+	private Map<String, String> filaMensagemGrupo;
 
 	public User(String username, String password) {
 		this.username = username;
@@ -60,15 +61,18 @@ public class User {
 		this.listContatos = listContatos;
 	}
 
-	public Map<String, String> getFilaIndividual() {
-		if (filaIndividual == null) {
-			filaIndividual = new HashMap<String, String>();
+	public Map<String, String> getFilaMensagemIndividual() {
+		if (filaMensagemIndividual == null) {
+			filaMensagemIndividual = new HashMap<String, String>();
 		}
-		return filaIndividual;
+		return filaMensagemIndividual;
 	}
 
-	public void setFilaIndividual(Map<String, String> filaIndividual) {
-		this.filaIndividual = filaIndividual;
+	public Map<String, String> getFilaMensagemGrupo() {
+		if (filaMensagemGrupo == null) {
+			filaMensagemGrupo = new HashMap<String, String>();
+		}
+		return filaMensagemGrupo;
 	}
 
 	@Override

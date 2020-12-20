@@ -2,8 +2,6 @@ package br.com.ifsc.crud.controllersViews;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import br.com.ifsc.crud.App1;
 import br.com.ifsc.crud.controllers.ControllerUser;
@@ -50,11 +48,6 @@ public class MensagemIndividualController implements Initializable {
 
 	private ControllerUser controllerUser;
 
-	private List<String> mensagensUsuario;
-
-	private List<String> mensagensContato;
-
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		controllerUser = ControllerUser.getInstance();
@@ -88,8 +81,7 @@ public class MensagemIndividualController implements Initializable {
 
 			controllerEmissorIndividual.setMensagem(textMensagemUsuario.getText().trim());
 			if (txtAreaMensagem.getText().isBlank()) {
-				txtAreaMensagem.setText(
-						userLogado.getUsername() + " enviou: " + textMensagemUsuario.getText().trim());
+				txtAreaMensagem.setText(userLogado.getUsername() + " enviou: " + textMensagemUsuario.getText().trim());
 
 			} else {
 				txtAreaMensagem.setText(txtAreaMensagem.getText() + "\n" + userLogado.getUsername()
@@ -97,7 +89,6 @@ public class MensagemIndividualController implements Initializable {
 			}
 
 			textMensagemUsuario.setText("");
-			getMensagensUsuario().add(textMensagemUsuario.getText().trim());
 			controllerEmissorIndividual.enviarMensagem();
 
 		} catch (Exception e) {
@@ -108,24 +99,28 @@ public class MensagemIndividualController implements Initializable {
 
 	private void verificarConversaInserida() {
 
-		if (userLogado.getFilaIndividual().containsKey(ControllerEmissorIndividual.getQUEUE_NAME())) {
+		if (userLogado.getFilaMensagemIndividual().containsKey(ControllerEmissorIndividual.getQUEUE_NAME())) {
 
-			if (!userLogado.getFilaIndividual().get(ControllerEmissorIndividual.getQUEUE_NAME()).isEmpty()) {
-				txtAreaMensagem
-						.setText(userLogado.getFilaIndividual().get(ControllerEmissorIndividual.getQUEUE_NAME()));
+			if (!userLogado.getFilaMensagemIndividual().get(ControllerEmissorIndividual.getQUEUE_NAME()).isEmpty()) {
+				txtAreaMensagem.setText(
+						userLogado.getFilaMensagemIndividual().get(ControllerEmissorIndividual.getQUEUE_NAME()));
 			}
 		}
 
 	}
 
 	public void sairConversa() {
-		userLogado.getFilaIndividual().put(ControllerEmissorIndividual.getQUEUE_NAME(), txtAreaMensagem.getText());
-		contato.getFilaIndividual().put(ControllerReceptorIndividual.getQUEUE_NAME(), txtAreaMensagem.getText());
+		userLogado.getFilaMensagemIndividual().put(ControllerEmissorIndividual.getQUEUE_NAME(),
+				txtAreaMensagem.getText());
+		contato.getFilaMensagemIndividual().put(ControllerReceptorIndividual.getQUEUE_NAME(),
+				txtAreaMensagem.getText());
 		userLogado.getListContatos().put(contato.getUsername(), contato);
 		contato.getListContatos().put(userLogado.getUsername(), userLogado);
 
 		controllerUser.getListUser().put(userLogado.getUsername(), userLogado);
 		controllerUser.getListUser().put(contato.getUsername(), contato);
+		
+		controllerReceptorIndividual.fecharConexao();
 
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(App1.class.getResource("principal.fxml"));
@@ -140,6 +135,7 @@ public class MensagemIndividualController implements Initializable {
 			Stage stageWindow = (Stage) scene.getWindow();
 			stageWindow.close();
 		} catch (IOException e) {
+			MessageAlert.mensagemErro("Não foi possível sair da conversa");
 			e.printStackTrace();
 		}
 
@@ -147,20 +143,6 @@ public class MensagemIndividualController implements Initializable {
 
 	public TextArea getTxtAreaMensagem() {
 		return txtAreaMensagem;
-	}
-
-	public List<String> getMensagensUsuario() {
-		if (mensagensUsuario == null) {
-			mensagensUsuario = new ArrayList<String>();
-		}
-		return mensagensUsuario;
-	}
-
-	public List<String> getMensagensContato() {
-		if (mensagensContato == null) {
-			mensagensContato = new ArrayList<String>();
-		}
-		return mensagensContato;
 	}
 
 }

@@ -14,6 +14,7 @@ import com.rabbitmq.client.Envelope;
 
 import br.com.ifsc.crud.controllersViews.MensagemGrupoController;
 import br.com.ifsc.crud.entities.User;
+import br.com.ifsc.crud.utility.MessageAlert;
 
 public class ControllerReceptorGrupo {
 	private String EXCHANGE_NAME;
@@ -72,6 +73,17 @@ public class ControllerReceptorGrupo {
 		}
 	}
 
+	public void fecharConexao() {
+		try {
+			channel.close();
+			connection.close();
+		} catch (IOException | TimeoutException e) {
+			MessageAlert.mensagemErro("Erro ao fechar conexão");
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public String getEXCHANGE_NAME() {
 		return EXCHANGE_NAME;
 	}
