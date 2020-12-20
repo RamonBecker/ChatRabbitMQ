@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import br.com.ifsc.crud.App;
 import br.com.ifsc.crud.controllers.ControllerUser;
+import br.com.ifsc.crud.entities.Grupo;
 import br.com.ifsc.crud.entities.User;
 import br.com.ifsc.crud.utility.MessageAlert;
 import javafx.collections.FXCollections;
@@ -25,7 +26,7 @@ public class PrincipalController implements Initializable {
 	private Button btnGrupo;
 
 	@FXML
-	private ListView<User> listViewGrupo;
+	private ListView<Grupo> listViewGrupo;
 
 	@FXML
 	private ListView<User> listViewContatos;
@@ -40,6 +41,8 @@ public class PrincipalController implements Initializable {
 
 	private ObservableList<User> listContatos = FXCollections.observableArrayList();
 
+	private ObservableList<Grupo> listGrupos = FXCollections.observableArrayList();
+
 	private User userContato;
 
 	private User userLogado;
@@ -48,15 +51,21 @@ public class PrincipalController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		userLogado = controllerUser.getListUser().get(controllerUser.getUserLogado());
 		textUsuario.setText(userLogado.getUsername());
+		preencherListViewGrupo();
 		preencherListViewContato();
 	}
 
 	private void preencherListContatosObservable() {
-		// User userLogado =
-		// controllerUser.getListUser().get(controllerUser.getUserLogado());
 		for (String username : userLogado.getListContatos().keySet()) {
 			User user = controllerUser.getListUser().get(username);
 			listContatos.add(user);
+		}
+	}
+
+	private void preencherListGrupoObservable() {
+		for (String nomeGrupo : userLogado.getListGrupos().keySet()) {
+			Grupo grupo = userLogado.getListGrupos().get(nomeGrupo);
+			listGrupos.add(grupo);
 		}
 	}
 
@@ -66,9 +75,11 @@ public class PrincipalController implements Initializable {
 		listViewContatos.setItems(listContatos);
 
 	}
-	
+
 	private void preencherListViewGrupo() {
-		
+		preencherListGrupoObservable();
+		listViewGrupo.getItems().clear();
+		listViewGrupo.setItems(listGrupos);
 	}
 
 	public void actionListViewContato() {
