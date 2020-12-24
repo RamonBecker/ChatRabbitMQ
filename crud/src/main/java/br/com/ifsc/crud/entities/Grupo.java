@@ -49,6 +49,8 @@ public class Grupo {
 		}
 		this.mensagem = mensagem;
 	}
+	
+	
 
 	@Override
 	public String toString() {

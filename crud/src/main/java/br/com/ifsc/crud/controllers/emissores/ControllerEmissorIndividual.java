@@ -11,7 +11,7 @@ import br.com.ifsc.crud.controllersViews.MensagemIndividualController;
 import br.com.ifsc.crud.entities.User;
 
 public class ControllerEmissorIndividual {
-	private static String QUEUE_NAME;
+	private  String QUEUE_NAME;
 	private final static String VHOST = "/";
 	private static User user;
 	public final static String HOST = "localhost";
@@ -44,15 +44,15 @@ public class ControllerEmissorIndividual {
 		}
 	}
 
-	public static String getQUEUE_NAME() {
+	public  String getQUEUE_NAME() {
 		return QUEUE_NAME;
 	}
 
-	public static void setQUEUE_NAME(String qUEUE_NAME) {
+	public  void setQUEUE_NAME(String qUEUE_NAME) {
 		if (qUEUE_NAME == null || qUEUE_NAME.isBlank()) {
 			throw new IllegalArgumentException("A fila não pode ser vazia!");
 		}
-		QUEUE_NAME = qUEUE_NAME;
+		this.QUEUE_NAME = qUEUE_NAME;
 	}
 
 	public static User getUser() {

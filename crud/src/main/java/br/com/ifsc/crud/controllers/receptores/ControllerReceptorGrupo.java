@@ -24,6 +24,8 @@ public class ControllerReceptorGrupo {
 	private Connection connection;
 	private Channel channel;
 	private static MensagemGrupoController mensagemGrupoController;
+	private boolean ativo;
+
 
 	public void iniciarReceptorGrupo() {
 		try {

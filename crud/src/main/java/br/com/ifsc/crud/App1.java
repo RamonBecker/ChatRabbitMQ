@@ -17,7 +17,7 @@ public class App1 extends Application {
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(App1.class.getResource("registerGrupo.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(App1.class.getResource("notificacao.fxml"));
 		Parent parent = fxmlLoader.load();
 		scene = new Scene(parent);
 		stage.setScene(scene);

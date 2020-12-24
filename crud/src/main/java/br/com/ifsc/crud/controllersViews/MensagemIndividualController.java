@@ -55,31 +55,33 @@ public class MensagemIndividualController implements Initializable {
 
 		ControllerEmissorIndividual.setUser(userLogado);
 		controllerEmissorIndividual = new ControllerEmissorIndividual();
-		ControllerEmissorIndividual.setQUEUE_NAME(contato.getUsername() + "" + userLogado.getUsername());
+		controllerEmissorIndividual.setQUEUE_NAME(contato.getUsername() + "" + userLogado.getUsername() + "individual");
 
-		controllerReceptorIndividual = new ControllerReceptorIndividual();
-		ControllerReceptorIndividual.setQUEUE_NAME(userLogado.getUsername() + "" + contato.getUsername());
-		ControllerReceptorIndividual.setUser(userLogado);
-		ControllerReceptorIndividual.setContato(contato);
+		userLogado.setAtivoConversa(true);
+		contato.setAtivoConversa(true);
+		userLogado.getListContatos().put(contato.getUsername(), contato);
+
+		controllerReceptorIndividual = userLogado.getControllerReceptorIndividual()
+				.get(userLogado.getUsername() + "" + contato.getUsername() + "individual");
+		controllerReceptorIndividual.setMensagemIndividualController(this);
+		controllerReceptorIndividual.setUser(userLogado);
+		controllerReceptorIndividual.setContato(contato);
+		controllerReceptorIndividual.setMensagemIndividualController(this);
 
 		textContato.setText(contato.getUsername());
 		textUsuario.setText(userLogado.getUsername());
 
-		controllerEmissorIndividual.setMensagemIndividualController(this);
-		ControllerReceptorIndividual.setMensagemIndividualController(this);
+		controllerUser.getListUser().put(userLogado.getUsername(), userLogado);
+		controllerUser.getListUser().put(contato.getUsername(), contato);
 
-		iniciarReceptor();
 		verificarConversaInserida();
-	}
-
-	private void iniciarReceptor() {
-		controllerReceptorIndividual.iniciarReceptorIndividual();
 	}
 
 	public void enviarMensagem() {
 		try {
 
-			controllerEmissorIndividual.setMensagem(textMensagemUsuario.getText().trim());
+			controllerEmissorIndividual
+					.setMensagem(userLogado.getUsername() + ";" + textMensagemUsuario.getText().trim());
 			if (txtAreaMensagem.getText().isBlank()) {
 				txtAreaMensagem.setText(userLogado.getUsername() + " enviou: " + textMensagemUsuario.getText().trim());
 
@@ -88,8 +90,8 @@ public class MensagemIndividualController implements Initializable {
 						+ " enviou a mensagem: " + textMensagemUsuario.getText().trim());
 			}
 
-			textMensagemUsuario.setText("");
 			controllerEmissorIndividual.enviarMensagem();
+			textMensagemUsuario.setText("");
 
 		} catch (Exception e) {
 			MessageAlert.mensagemErro(e.getMessage());
@@ -98,29 +100,28 @@ public class MensagemIndividualController implements Initializable {
 	}
 
 	private void verificarConversaInserida() {
-
-		if (userLogado.getFilaMensagemIndividual().containsKey(ControllerEmissorIndividual.getQUEUE_NAME())) {
-
-			if (!userLogado.getFilaMensagemIndividual().get(ControllerEmissorIndividual.getQUEUE_NAME()).isEmpty()) {
-				txtAreaMensagem.setText(
-						userLogado.getFilaMensagemIndividual().get(ControllerEmissorIndividual.getQUEUE_NAME()));
+		if (userLogado.getFilaMensagemIndividual().containsKey(controllerReceptorIndividual.getQUEUE_NAME())) {
+			String mensagem = userLogado.getFilaMensagemIndividual().get(controllerReceptorIndividual.getQUEUE_NAME());
+			if (!mensagem.isEmpty() && mensagem != "null") {
+				txtAreaMensagem.setText(mensagem);
 			}
 		}
 
 	}
 
 	public void sairConversa() {
-		userLogado.getFilaMensagemIndividual().put(ControllerEmissorIndividual.getQUEUE_NAME(),
+		userLogado.getFilaMensagemIndividual().put(controllerReceptorIndividual.getQUEUE_NAME(),
 				txtAreaMensagem.getText());
-		contato.getFilaMensagemIndividual().put(ControllerReceptorIndividual.getQUEUE_NAME(),
+
+		contato.getFilaMensagemIndividual().put(controllerReceptorIndividual.getQUEUE_NAME(),
 				txtAreaMensagem.getText());
+
 		userLogado.getListContatos().put(contato.getUsername(), contato);
+
 		contato.getListContatos().put(userLogado.getUsername(), userLogado);
 
 		controllerUser.getListUser().put(userLogado.getUsername(), userLogado);
 		controllerUser.getListUser().put(contato.getUsername(), contato);
-		
-		controllerReceptorIndividual.fecharConexao();
 
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(App1.class.getResource("principal.fxml"));

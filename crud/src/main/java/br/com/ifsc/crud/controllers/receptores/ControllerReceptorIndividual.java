@@ -9,30 +9,32 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+
+import br.com.ifsc.crud.controllers.ControllerUser;
 import br.com.ifsc.crud.controllersViews.MensagemIndividualController;
+import br.com.ifsc.crud.controllersViews.PrincipalController;
 import br.com.ifsc.crud.entities.User;
 import br.com.ifsc.crud.utility.MessageAlert;
+import javafx.application.Platform;
 
-public class ControllerReceptorIndividual extends Thread {
-	private static String QUEUE_NAME;
+public class ControllerReceptorIndividual {
+	private String QUEUE_NAME;
 	private static final String VHOST = "/";
-	private static User user;
-	private static User contato;
+	private User user;
+	private User contato;
 	private static final String HOST = "localhost";
 	private static String mensagem;
 	private static ConnectionFactory factory;
 	private static Connection connection;
 	private static Channel channel;
-	private static MensagemIndividualController mensagemIndividualController;
+	private MensagemIndividualController mensagemIndividualController;
+	private PrincipalController principalController;
+	private ControllerUser controllerUser;
+	private static String resposta;
 
 	public ControllerReceptorIndividual() {
 		factory = new ConnectionFactory();
-	}
-
-	public void run() {
-
-		iniciarReceptorIndividual();
-
+		controllerUser = ControllerUser.getInstance();
 	}
 
 	public void iniciarReceptorIndividual() {
@@ -55,18 +57,29 @@ public class ControllerReceptorIndividual extends Thread {
 						byte[] body) throws IOException {
 					mensagem = new String(body, "UTF-8");
 					System.out.println(" Mensagem: " + mensagem);
+					String[] mensagemSeparada = mensagem.split(";");
 
-					if (getMensagemIndividualController().getTxtAreaMensagem().getText().isBlank()) {
-						getMensagemIndividualController().getTxtAreaMensagem().setText(
+					resposta = mensagemSeparada[0] + " enviou " + mensagemSeparada[1] + "\n";
 
-								getContato().getUsername() + " enviou:" + mensagem);
-					} else {
+					user.getFilaMensagemIndividual().put(getQUEUE_NAME(), resposta);
+					contato.getFilaMensagemIndividual().put(getQUEUE_NAME(), resposta);
+					controllerUser.getListUser().put(user.getUsername(), user);
+					controllerUser.getListUser().put(contato.getUsername(), contato);
 
-						getMensagemIndividualController().getTxtAreaMensagem()
-								.setText(getMensagemIndividualController().getTxtAreaMensagem().getText() + "\n"
-										+ getContato().getUsername() + " respondeu:" + mensagem);
+					if (mensagemIndividualController != null) {
 
+						if (mensagemIndividualController.getTxtAreaMensagem().getText().isBlank()) {
+							mensagemIndividualController.getTxtAreaMensagem().setText(resposta);
+						} else {
+
+							mensagemIndividualController.getTxtAreaMensagem().setText(
+									mensagemIndividualController.getTxtAreaMensagem().getText() + "\n" + resposta);
+						}
 					}
+					Platform.runLater(() -> {
+						MessageAlert.mensagemRealizadoSucesso("Usuário:" + user.getUsername() + "\n" + resposta);
+
+					});
 
 				}
 
@@ -80,7 +93,6 @@ public class ControllerReceptorIndividual extends Thread {
 
 	}
 
-	
 	public void fecharConexao() {
 		try {
 			channel.close();
@@ -89,30 +101,29 @@ public class ControllerReceptorIndividual extends Thread {
 			MessageAlert.mensagemErro("Erro ao fechar conexão");
 			e.printStackTrace();
 		}
-		
-	}
-	
 
-	public static String getQUEUE_NAME() {
+	}
+
+	public String getQUEUE_NAME() {
 		return QUEUE_NAME;
 	}
 
-	public static void setQUEUE_NAME(String qUEUE_NAME) {
+	public void setQUEUE_NAME(String qUEUE_NAME) {
 		if (qUEUE_NAME == null || qUEUE_NAME.isBlank()) {
 			throw new IllegalArgumentException("O nome da fila não pode ser vazio");
 		}
 		QUEUE_NAME = qUEUE_NAME;
 	}
 
-	public static User getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public static void setUser(User user) {
+	public void setUser(User user) {
 		if (user == null) {
 			throw new IllegalArgumentException("O usuário não pode ser nulo!");
 		}
-		ControllerReceptorIndividual.user = user;
+		this.user = user;
 	}
 
 	public static String getMensagem() {
@@ -126,23 +137,35 @@ public class ControllerReceptorIndividual extends Thread {
 		ControllerReceptorIndividual.mensagem = mensagem;
 	}
 
-	public static MensagemIndividualController getMensagemIndividualController() {
+	public MensagemIndividualController getMensagemIndividualController() {
 		return mensagemIndividualController;
 	}
 
-	public static void setMensagemIndividualController(MensagemIndividualController mensagemIndividualController) {
-		ControllerReceptorIndividual.mensagemIndividualController = mensagemIndividualController;
+	public void setMensagemIndividualController(MensagemIndividualController mensagemIndividualController) {
+		this.mensagemIndividualController = mensagemIndividualController;
 	}
 
-	public static User getContato() {
+	public String getResposta() {
+		return resposta;
+	}
+
+	public User getContato() {
 		return contato;
 	}
 
-	public static void setContato(User contato) {
+	public void setContato(User contato) {
 		if (contato == null) {
 			throw new IllegalArgumentException("O contato não pode ser vazio");
 		}
-		ControllerReceptorIndividual.contato = contato;
+		this.contato = contato;
+	}
+
+	public PrincipalController getPrincipalController() {
+		return principalController;
+	}
+
+	public void setPrincipalController(PrincipalController principalController) {
+		this.principalController = principalController;
 	}
 
 }

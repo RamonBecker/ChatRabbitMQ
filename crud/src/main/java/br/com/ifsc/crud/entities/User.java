@@ -3,6 +3,8 @@ package br.com.ifsc.crud.entities;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.com.ifsc.crud.controllers.receptores.ControllerReceptorIndividual;
+
 public class User {
 
 	private String username;
@@ -11,6 +13,8 @@ public class User {
 	private Map<String, User> listContatos;
 	private Map<String, String> filaMensagemIndividual;
 	private Map<String, String> filaMensagemGrupo;
+	private Map<String, ControllerReceptorIndividual> controllerReceptorIndividual;
+	private boolean ativoConversa;
 
 	public User(String username, String password) {
 		this.username = username;
@@ -73,6 +77,27 @@ public class User {
 			filaMensagemGrupo = new HashMap<String, String>();
 		}
 		return filaMensagemGrupo;
+	}
+
+	public Map<String, ControllerReceptorIndividual> getControllerReceptorIndividual() {
+		if (controllerReceptorIndividual == null) {
+			controllerReceptorIndividual = new HashMap<String, ControllerReceptorIndividual>();
+		}
+		return controllerReceptorIndividual;
+	}
+
+	public void setControllerReceptorIndividual(
+			Map<String, ControllerReceptorIndividual> controllerReceptorIndividual) {
+
+		this.controllerReceptorIndividual = controllerReceptorIndividual;
+	}
+
+	public boolean isAtivoConversa() {
+		return ativoConversa;
+	}
+
+	public void setAtivoConversa(boolean ativoConversa) {
+		this.ativoConversa = ativoConversa;
 	}
 
 	@Override
