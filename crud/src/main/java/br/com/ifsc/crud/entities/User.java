@@ -2,7 +2,8 @@ package br.com.ifsc.crud.entities;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import br.com.ifsc.crud.controllers.emissores.ControllerEmissorGrupo;
+import br.com.ifsc.crud.controllers.receptores.ControllerReceptorGrupo;
 import br.com.ifsc.crud.controllers.receptores.ControllerReceptorIndividual;
 
 public class User {
@@ -14,7 +15,8 @@ public class User {
 	private Map<String, String> filaMensagemIndividual;
 	private Map<String, String> filaMensagemGrupo;
 	private Map<String, ControllerReceptorIndividual> controllerReceptorIndividual;
-	private boolean ativoConversa;
+	private Map<String, ControllerReceptorGrupo> controllerReceptorGrupo;
+	private Map<String, ControllerEmissorGrupo> controllerEmissorGrupo;
 
 	public User(String username, String password) {
 		this.username = username;
@@ -50,19 +52,11 @@ public class User {
 		return listGrupos;
 	}
 
-	public void setListGrupos(Map<String, Grupo> listGrupos) {
-		this.listGrupos = listGrupos;
-	}
-
 	public Map<String, User> getListContatos() {
 		if (this.listContatos == null) {
 			this.listContatos = new HashMap<String, User>();
 		}
 		return listContatos;
-	}
-
-	public void setListContatos(Map<String, User> listContatos) {
-		this.listContatos = listContatos;
 	}
 
 	public Map<String, String> getFilaMensagemIndividual() {
@@ -86,18 +80,18 @@ public class User {
 		return controllerReceptorIndividual;
 	}
 
-	public void setControllerReceptorIndividual(
-			Map<String, ControllerReceptorIndividual> controllerReceptorIndividual) {
-
-		this.controllerReceptorIndividual = controllerReceptorIndividual;
+	public Map<String, ControllerReceptorGrupo> getControllerReceptorGrupo() {
+		if (controllerReceptorGrupo == null) {
+			controllerReceptorGrupo = new HashMap<String, ControllerReceptorGrupo>();
+		}
+		return controllerReceptorGrupo;
 	}
 
-	public boolean isAtivoConversa() {
-		return ativoConversa;
-	}
-
-	public void setAtivoConversa(boolean ativoConversa) {
-		this.ativoConversa = ativoConversa;
+	public Map<String, ControllerEmissorGrupo> getControllerEmissorGrupo() {
+		if (controllerEmissorGrupo == null) {
+			controllerEmissorGrupo = new HashMap<String, ControllerEmissorGrupo>();
+		}
+		return controllerEmissorGrupo;
 	}
 
 	@Override

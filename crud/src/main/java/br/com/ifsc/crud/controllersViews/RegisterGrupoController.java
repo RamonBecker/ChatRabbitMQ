@@ -116,9 +116,7 @@ public class RegisterGrupoController implements Initializable {
 		}
 		if (radioNao.isSelected()) {
 			User auxContato = listViewContatos.getSelectionModel().getSelectedItem();
-			System.out.println("AUX contato:" + auxContato);
 			if (aux_user.getListGrupos().containsKey(textNomeGrupo.getText())) {
-				System.out.println("Passou do primeiro IF");
 				if (aux_user.getListGrupos().get(textNomeGrupo.getText()).getListUsers()
 						.containsKey(auxContato.getUsername())) {
 					MessageAlert.mensagemErro("Esse usuário já está adicionado no grupo!");
@@ -146,7 +144,7 @@ public class RegisterGrupoController implements Initializable {
 		}
 
 		MessageAlert.mensagemRealizadoSucesso("Contatos adicionados com sucesso!");
-		listarGrupos();
+		//listarGrupos();
 		cleanFields();
 	}
 
@@ -158,7 +156,7 @@ public class RegisterGrupoController implements Initializable {
 		controllerUser.getListUser().put(user.getUsername(), user);
 		controllerUser.getListUser().put(contato.getUsername(), contato);
 		MessageAlert.mensagemRealizadoSucesso("Contato adicionado com sucesso!");
-		listarGrupos();
+		//listarGrupos();
 		cleanFields();
 	}
 

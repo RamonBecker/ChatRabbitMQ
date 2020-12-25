@@ -57,8 +57,6 @@ public class MensagemIndividualController implements Initializable {
 		controllerEmissorIndividual = new ControllerEmissorIndividual();
 		controllerEmissorIndividual.setQUEUE_NAME(contato.getUsername() + "" + userLogado.getUsername() + "individual");
 
-		userLogado.setAtivoConversa(true);
-		contato.setAtivoConversa(true);
 		userLogado.getListContatos().put(contato.getUsername(), contato);
 
 		controllerReceptorIndividual = userLogado.getControllerReceptorIndividual()
@@ -87,7 +85,7 @@ public class MensagemIndividualController implements Initializable {
 
 			} else {
 				txtAreaMensagem.setText(txtAreaMensagem.getText() + "\n" + userLogado.getUsername()
-						+ " enviou a mensagem: " + textMensagemUsuario.getText().trim());
+						+ " enviou: " + textMensagemUsuario.getText().trim());
 			}
 
 			controllerEmissorIndividual.enviarMensagem();

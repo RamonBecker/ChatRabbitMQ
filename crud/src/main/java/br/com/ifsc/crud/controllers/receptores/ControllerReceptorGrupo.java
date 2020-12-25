@@ -2,7 +2,6 @@ package br.com.ifsc.crud.controllers.receptores;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
-
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
@@ -12,9 +11,12 @@ import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
+import br.com.ifsc.crud.controllers.ControllerUser;
 import br.com.ifsc.crud.controllersViews.MensagemGrupoController;
+import br.com.ifsc.crud.entities.Grupo;
 import br.com.ifsc.crud.entities.User;
 import br.com.ifsc.crud.utility.MessageAlert;
+import javafx.application.Platform;
 
 public class ControllerReceptorGrupo {
 	private String EXCHANGE_NAME;
@@ -25,7 +27,15 @@ public class ControllerReceptorGrupo {
 	private Channel channel;
 	private static MensagemGrupoController mensagemGrupoController;
 	private boolean ativo;
+	private String resposta;
+	private Grupo grupo;
+	private ControllerUser controllerUser;
+	private User userLogado;
 
+	public ControllerReceptorGrupo() {
+		controllerUser = ControllerUser.getInstance();
+		userLogado = controllerUser.getListUser().get(controllerUser.getUserLogado());
+	}
 
 	public void iniciarReceptorGrupo() {
 		try {
@@ -53,20 +63,33 @@ public class ControllerReceptorGrupo {
 					System.out.println(" Mensagem: " + message);
 
 					String[] mensagemSeparada = message.split(";");
-					System.out.println(mensagemSeparada[0]);
-					System.out.println(mensagemSeparada[1]);
-					
-					if (getMensagemGrupoController().getTxtAreaMensagem().getText().isBlank()) {
-						getMensagemGrupoController().getTxtAreaMensagem().setText(
 
-								mensagemSeparada[0] + " enviou:" + mensagemSeparada[1]);
-					} else {
+					resposta = mensagemSeparada[0] + " enviou " + mensagemSeparada[1];
 
-						getMensagemGrupoController().getTxtAreaMensagem()
-								.setText(getMensagemGrupoController().getTxtAreaMensagem().getText() + "\n"
-										+ mensagemSeparada[0]  + " respondeu:" + mensagemSeparada[1]);
+					if (getMensagemGrupoController() != null) {
+						if (getMensagemGrupoController().getTxtAreaMensagem().getText().isBlank()) {
+							getMensagemGrupoController().getTxtAreaMensagem().setText(resposta);
 
+						} else {
+							getMensagemGrupoController().getTxtAreaMensagem()
+									.setText(getMensagemGrupoController().getTxtAreaMensagem().getText() + "\n"
+											+ resposta);
+						}
 					}
+
+					if (grupo.getMensagem() != null) {
+						grupo.setMensagem(grupo.getMensagem() + "\n" + resposta);
+					} else {
+						grupo.setMensagem(resposta);
+					}
+					
+					userLogado.getListGrupos().put(grupo.getName(), grupo);
+					controllerUser.getListUser().put(userLogado.getUsername(), userLogado);
+
+					Platform.runLater(() -> {
+						MessageAlert.mensagemRealizadoSucesso("Grupo:" + grupo.getName() + "\n" + resposta);
+
+					});
 				}
 			};
 			channel.basicConsume(queueName, true, consumer);
@@ -83,9 +106,9 @@ public class ControllerReceptorGrupo {
 			MessageAlert.mensagemErro("Erro ao fechar conexão");
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public String getEXCHANGE_NAME() {
 		return EXCHANGE_NAME;
 	}
@@ -117,4 +140,19 @@ public class ControllerReceptorGrupo {
 
 	}
 
+	public Grupo getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(Grupo grupo) {
+		this.grupo = grupo;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
 }

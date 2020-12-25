@@ -59,7 +59,7 @@ public class ControllerReceptorIndividual {
 					System.out.println(" Mensagem: " + mensagem);
 					String[] mensagemSeparada = mensagem.split(";");
 
-					resposta = mensagemSeparada[0] + " enviou " + mensagemSeparada[1] + "\n";
+					resposta = mensagemSeparada[0] + " enviou " + mensagemSeparada[1];
 
 					user.getFilaMensagemIndividual().put(getQUEUE_NAME(), resposta);
 					contato.getFilaMensagemIndividual().put(getQUEUE_NAME(), resposta);

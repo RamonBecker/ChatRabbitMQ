@@ -2,16 +2,14 @@ package br.com.ifsc.crud.controllersViews;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 import br.com.ifsc.crud.App;
 import br.com.ifsc.crud.controllers.ControllerUser;
+import br.com.ifsc.crud.controllers.emissores.ControllerEmissorGrupo;
 import br.com.ifsc.crud.controllers.receptores.ControllerReceptorGrupo;
 import br.com.ifsc.crud.controllers.receptores.ControllerReceptorIndividual;
 import br.com.ifsc.crud.entities.Grupo;
 import br.com.ifsc.crud.entities.User;
-import br.com.ifsc.crud.threads.VerificarMensagemIndividual;
 import br.com.ifsc.crud.utility.MessageAlert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,37 +52,71 @@ public class PrincipalController implements Initializable {
 
 	private Grupo grupo;
 
-	private Map<String, ControllerReceptorIndividual> listReceptoresIndividuais;
-	private Map<String, ControllerReceptorGrupo> listReceptoresGrupos;
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		controllerUser = ControllerUser.getInstance();
 		userLogado = controllerUser.getListUser().get(controllerUser.getUserLogado());
-		listReceptoresIndividuais = new HashMap<String, ControllerReceptorIndividual>();
+
 		textUsuario.setText(userLogado.getUsername());
 		preencherListViewGrupo();
 		preencherListViewContato();
 		iniciarReceptoresIndividuais();
-	//	notificacao();
+		iniciarReceptoresGrupos();
+	}
+
+	private void iniciarReceptoresGrupos() {
+
+		ControllerReceptorGrupo controllerReceptorGrupo = null;
+		ControllerEmissorGrupo controllerEmissorGrupo = null;
+
+		for (String grupo : userLogado.getListGrupos().keySet()) {
+			Grupo aux_Grupo = userLogado.getListGrupos().get(grupo);
+
+			for (String usernameContato : aux_Grupo.getListUsers().keySet()) {
+				User contato = aux_Grupo.getListUsers().get(usernameContato);
+
+				String nomeFilaReceptor = userLogado.getUsername() + "" + contato.getUsername();
+				String nomeFilaEmissor = contato.getUsername() + "" + userLogado.getUsername();
+
+				if (!(userLogado.getControllerReceptorGrupo().containsKey(nomeFilaReceptor))
+						&& !(userLogado.getControllerEmissorGrupo().containsKey(nomeFilaEmissor))) {
+
+					controllerReceptorGrupo = new ControllerReceptorGrupo();
+					controllerReceptorGrupo.setNomeFila(nomeFilaReceptor);
+					controllerReceptorGrupo.setUser(userLogado);
+					controllerReceptorGrupo.setGrupo(aux_Grupo);
+					controllerReceptorGrupo.iniciarReceptorGrupo();
+
+					controllerEmissorGrupo = new ControllerEmissorGrupo();
+					controllerEmissorGrupo.setNomeFila(nomeFilaEmissor);
+					controllerEmissorGrupo.setUser(userLogado);
+					userLogado.getControllerReceptorGrupo().put(controllerReceptorGrupo.getEXCHANGE_NAME(),
+							controllerReceptorGrupo);
+					userLogado.getControllerEmissorGrupo().put(controllerEmissorGrupo.getEXCHANGE_NAME(),
+							controllerEmissorGrupo);
+					controllerUser.getListUser().put(userLogado.getUsername(), userLogado);
+				}
+
+			}
+
+		}
 	}
 
 	private void iniciarReceptoresIndividuais() {
 		ControllerReceptorIndividual controllerReceptorIndividual = null;
-		System.out.println(listContatos.size());
-		for (User contato : listContatos) {
-			controllerReceptorIndividual = new ControllerReceptorIndividual();
-			controllerReceptorIndividual.setUser(userLogado);
-			controllerReceptorIndividual.setContato(contato);
-			controllerReceptorIndividual
-					.setQUEUE_NAME(userLogado.getUsername() + "" + contato.getUsername() + "individual");
 
-			controllerReceptorIndividual.iniciarReceptorIndividual();
-			userLogado.getControllerReceptorIndividual().put(controllerReceptorIndividual.getQUEUE_NAME(),
-					controllerReceptorIndividual);
-			controllerUser.getListUser().put(userLogado.getUsername(), userLogado);
-			// listReceptoresIndividuais.put(controllerReceptorIndividual.getQUEUE_NAME(),
-			// controllerReceptorIndividual);
+		if (userLogado.getControllerReceptorIndividual().isEmpty()) {
+			for (User contato : listContatos) {
+				controllerReceptorIndividual = new ControllerReceptorIndividual();
+				controllerReceptorIndividual.setUser(userLogado);
+				controllerReceptorIndividual.setContato(contato);
+				controllerReceptorIndividual
+						.setQUEUE_NAME(userLogado.getUsername() + "" + contato.getUsername() + "individual");
+				controllerReceptorIndividual.iniciarReceptorIndividual();
+				userLogado.getControllerReceptorIndividual().put(controllerReceptorIndividual.getQUEUE_NAME(),
+						controllerReceptorIndividual);
+				controllerUser.getListUser().put(userLogado.getUsername(), userLogado);
+			}
 		}
 
 	}
@@ -184,6 +216,21 @@ public class PrincipalController implements Initializable {
 	}
 
 	public void sair() {
+
+//		if (!userLogado.getControllerReceptorGrupo().isEmpty()) {
+//			for (String filaReceptor : userLogado.getControllerReceptorGrupo().keySet()) {
+//				ControllerReceptorGrupo controllerReceptorGrupo = userLogado.getControllerReceptorGrupo()
+//						.get(filaReceptor);
+//				controllerReceptorGrupo.fecharConexao();
+//			}
+//		}
+//
+//		for (String filaEmissor : userLogado.getControllerReceptorIndividual().keySet()) {
+//			ControllerReceptorIndividual controllerReceptorIndividual = userLogado.getControllerReceptorIndividual()
+//					.get(filaEmissor);
+//			controllerReceptorIndividual.fecharConexao();
+//		}
+
 		try {
 			Scene scene = btnGrupo.getScene();
 			Stage stageWindow = (Stage) scene.getWindow();
@@ -203,6 +250,5 @@ public class PrincipalController implements Initializable {
 		}
 
 	}
-
 
 }
